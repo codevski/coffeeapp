@@ -7,5 +7,8 @@ class Coffee
     @price = price
   end
 
-
+  def sizes_available
+    # loop @prices to list size available for
+    # this coffee
+  end
 end

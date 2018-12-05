@@ -1,5 +1,10 @@
 require 'user_order'
 require 'helper'
+
+=begin
+  Collection of oders in the CoffeeApp System
+=end
+  
 class Orders
 
   include Helper

@@ -1,8 +1,8 @@
 require 'user'
 module Helper
-
+  
 =begin
-  This Helper file allows functions that do calculations, processing or modifying
+  Helper file allows functions that do calculations, processing or modifying
   particular Array's / Hash
 =end
 
@@ -29,12 +29,7 @@ module Helper
         balance = order.get_total_price
         @user_balance << User.new(user, order.get_total_price.round(2), 0.0, balance.round(2))
       end
-
-
-      
-
     end
-
     return @user_balance
   end
 
@@ -46,6 +41,15 @@ module Helper
     @temp.map do |v|
       users = v["user"]
     end
+  end
+
+  def to_json(data)
+    user_balance ||= []
+    data.each do |v|
+      user_balance << {"user": v.name, "order_total": v.order_total, "payment_total": v.payment_total, "balance": v.balance}
+      # puts v.name
+    end
+    return user_balance.to_json
   end
   
 end

@@ -6,8 +6,6 @@ class User
 
   def initialize(name, order_total, payment_total, balance)
     @name = name
-    # @orders = orders
-    # @payments = payments
     @order_total = order_total
     @payment_total = payment_total
     @balance = balance
