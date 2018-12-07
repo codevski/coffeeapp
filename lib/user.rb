@@ -51,7 +51,7 @@ class User
   end
 
   class << self
-    def find_by_name users, name
+    def find_by_name(users, name)
       users.find{|x| x.name == name }
     end
   end

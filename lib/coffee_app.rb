@@ -17,12 +17,13 @@ class CoffeeApp
     @users    = []
 
     # Construct User's to assign Orders and Payments
-   find_all_uniq_users(orders).each { |user| @users << User.new(user)}
+    find_all_uniq_users(@orders).each { |user| @users << User.new(user)}
 
     # Load the list of prices as an Menu Object of coffee's    
     @coffees = @prices.each { |item| Coffee.new(item["drink_name"], item["sizes"]) }
 
 
+    # puts @orders
     # Load the orders & Calculate the total cost of each user's orders
     @orders.each do |order_data|
       user    = order_data['user']

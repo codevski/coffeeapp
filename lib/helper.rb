@@ -1,4 +1,3 @@
-require 'user'
 module Helper
   
 =begin
@@ -7,21 +6,16 @@ module Helper
 =end
 
   def find_all_uniq_users(orders)
+    # puts orders
     users = []
-    orders = JSON.parse(orders)
-    @temp = orders.uniq {|k| k["user"] }
-
-    @temp.map do |v|
-      users = v["user"]
-    end
+    orders.each {|k| users << k['user'] }
+    # puts users.uniq
+    users.uniq
   end
 
   def convert_to_string(users)
     user_balance ||= []
-    users.each do |user|
-      user_balance << {"user": user.name, "order_total": user.order_total, "payment_total": user.payment_total, "balance": user.balance}
-      # puts v.name
-    end
+    users.each {|user| user_balance << {'user': user.name, "order_total": user.order_total, "payment_total": user.payment_total, "balance": user.balance} }
     user_balance.to_json
   end
   

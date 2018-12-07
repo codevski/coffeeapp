@@ -88,5 +88,4 @@ RSpec.describe "integration" do
       expect(result[3]["balance"]).to eq 6.53 # zoey: 6.53
     end
   end
-
 end
