@@ -1,35 +1,54 @@
 # Put your code here!
-require 'orders'
+require 'order'
 require 'user'
-require 'products'
-require 'payments'
+require 'payment'
 require 'helper'
+require'coffee'
 
 include Helper
 
 class CoffeeApp
 
-  def initialize
-    
-  end
-
   def self.call(prices, orders, payments)
-    # Load the list of prices as an object of coffee's
-    products = Products.new(prices)
+    # Parse all files
+    @prices   = JSON.parse(prices)
+    @orders   = JSON.parse(orders)
+    @payments = JSON.parse(payments)
+    @users    = []
+
+    # Construct User's to assign Orders and Payments
+   find_all_uniq_users(orders).each { |user| @users << User.new(user)}
+
+    # Load the list of prices as an Menu Object of coffee's    
+    @coffees = @prices.each { |item| Coffee.new(item["drink_name"], item["sizes"]) }
+
 
     # Load the orders & Calculate the total cost of each user's orders
-    user_orders = Orders.new(products, orders)
+    @orders.each do |order_data|
+      user    = order_data['user']
+      product = order_data['drink']
+      size    = order_data['size']
 
-    # Load the payments
-    # Calculate the total payment for each user
-    # Calculate what each user now owes
-    user_payments = Payments.new(payments)
+      # Create new order object
+      order = Order.new(user, product, size, Coffee.find_price(@coffees, product, size))
 
-    # Construct JSON structure
-    all_users = all_users(orders)
-    user_balance = to_json(process_users(user_orders, user_payments, all_users))
+      # find the right user here based on name from our user database
+      User.find_by_name(@users, user).add_order(order)
+    end
+
+    # Load the payments & Calculate the total repayments of each user's orders
+    @payments.each do |payment_data|
+      user   = payment_data['user']
+      amount = payment_data['amount']
+
+      # Create new payment object
+      payment = Payment.new(user, amount)
+
+      # find the right user here based on name from our user database
+      User.find_by_name(@users, user).add_payment(payment)
+    end
 
     # Return a JSON string containing the results of this work.
-    return user_balance
+    convert_to_string(@users)
     end
 end

@@ -19,7 +19,7 @@ task "run" do
   user_balances = JSON.load(result_json)
 
   # puts user_balance
-  puts result_json
+  # puts result_json
 
   # # pretty print the output
   puts "Total:"
